@@ -19,7 +19,7 @@ urls = [f"{base_url}{i:02d}/" for i in range(1, 19)]
 
 async def fetch_content(url: str) -> str:
     '''獲取網頁內容'''
-    timeout = aiohttp.ClientTimeout(total=10)  # 設置超時時間為10秒
+    timeout = aiohttp.ClientTimeout(total=30)  # 設置超時時間為30秒
     async with aiohttp.ClientSession(timeout=timeout) as session:  # 建立一個 session 物件
         try:
             async with session.get(url) as response:  # 使用 session 物件發送網路請求
