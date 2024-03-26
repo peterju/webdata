@@ -66,7 +66,7 @@ async def generate_html_pages(results_dict: dict[str, list[str]], items_per_page
     <body>'''
 
     page_count = len(results_dict) // items_per_page + (1 if len(results_dict) % items_per_page != 0 else 0)
-    os.makedirs("html_result", exist_ok=True)  # 如果 html_result 子目錄不存在，則建立之
+    os.makedirs("html_result_淺釋", exist_ok=True)  # 如果 html_result_淺釋 子目錄不存在，則建立之
     for page_idx in range(page_count):
         html_content = html_top
         start_idx = page_idx * items_per_page
@@ -77,7 +77,7 @@ async def generate_html_pages(results_dict: dict[str, list[str]], items_per_page
                 html_content += f"{item}"  # 取出value值當作內容
             html_content += '</p>'
         html_content += "\n</body>\n</html>"
-        with open(f"html_result/lueyi_{page_idx + 1}.html", "w", encoding="utf-8") as file:
+        with open(f"html_result_淺釋/lueyi_{page_idx + 1}.html", "w", encoding="utf-8") as file:
             file.write(html_content)
 
     # 產生主頁
@@ -86,34 +86,32 @@ async def generate_html_pages(results_dict: dict[str, list[str]], items_per_page
     for page_idx in range(page_count):
         start_item = page_idx * items_per_page + 1
         end_item = min((page_idx + 1) * items_per_page, len(results_dict))
-        index_content += (
-            f'\n    <li><a href="lueyi_{page_idx + 1}.html">第 {start_item:04d}-{end_item:04d} 講</a></li>'
-        )
+        index_content += f'\n    <li><a href="lueyi_{page_idx + 1}.html">第 {start_item:04d}-{end_item:04d} 講</a></li>'
     index_content += "\n</ul>\n</body>\n</html>"
-    with open("html_result/lueyi.html", "w", encoding="utf-8") as file:
+    with open("html_result_淺釋/lueyi.html", "w", encoding="utf-8") as file:
         file.write(index_content)
-    print("主頁與子頁皆已生成，結果保存在 html_result 目錄中。")
+    print("主頁與子頁皆已生成，結果保存在 html_result_淺釋 目錄中。")
 
 
-async def generate_text_files(results_dict: dict[str, list[str]], items_per_file: int):
+async def generate_text_files(results_dict: dict[str, list[str]], items_per_file: int = 5):
     '''將結果寫入文字檔'''
     # 建立存放文字檔的子目錄
-    os.makedirs("text_result", exist_ok=True)  # 如果 text_result 子目錄不存在，則建立之
+    os.makedirs("text_result_淺釋", exist_ok=True)  # 如果 text_result_淺釋 子目錄不存在，則建立之
 
     for idx, (key, value) in enumerate(results_dict.items(), start=1):
         # 每 items_per_file 個 item 寫入一個文字檔
         if (idx - 1) % items_per_file == 0:
             file_idx = (idx - 1) // items_per_file + 1
-            with open(f"text_result/lueyi_{file_idx}.txt", "w", encoding="utf-8") as file:
+            with open(f"text_result_淺釋/lueyi_{file_idx}.txt", "w", encoding="utf-8") as file:
                 file.write(f"第 {idx:04d} 講：{key}\n")
         else:
-            with open(f"text_result/lueyi_{file_idx}.txt", "a", encoding="utf-8") as file:
+            with open(f"text_result_淺釋/lueyi_{file_idx}.txt", "a", encoding="utf-8") as file:
                 file.write(f"\n第 {idx:04d} 講：{key}\n")
         # 將換行符號消除，再寫入文件
         value_without_newlines = ''.join(value)
-        with open(f"text_result/lueyi_{file_idx}.txt", "a", encoding="utf-8") as file:
+        with open(f"text_result_淺釋/lueyi_{file_idx}.txt", "a", encoding="utf-8") as file:
             file.write(f"{value_without_newlines}\n")
-    print("文字檔已生成，結果保存在 text_result 目錄中。")
+    print("文字檔已生成，結果保存在 text_result_淺釋 目錄中。")
 
 
 async def main() -> dict[str, list[str]]:
@@ -126,9 +124,7 @@ async def main() -> dict[str, list[str]]:
     for title, content in completed_tasks:  # 將結果存儲在字典中
         results[title] = content  # 將標題和內容存儲在字典中
 
-    await asyncio.gather(
-        generate_html_pages(results, items_per_page=5), generate_text_files(results, items_per_file=50)
-    )
+    await asyncio.gather(generate_html_pages(results, items_per_page=5), generate_text_files(results, items_per_file=5))
     return results  # 返回結果
 
 
