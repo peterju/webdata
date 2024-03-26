@@ -1,3 +1,12 @@
+# 自訂排除
+html_result_淺釋/
+html_result_廣海/
+text_result_淺釋/
+text_result_廣海/
+chklink.py
+testurl.py
+error_links.yaml
+visited_links.yaml
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
