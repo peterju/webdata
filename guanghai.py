@@ -14,7 +14,7 @@ from lxml import html
 
 # 要讀取的網址列表
 base_url = "https://www.amrtf.org/zh-hant/clear-moonlight-great-ocean-"
-urls = [f"{base_url}{i:04d}/" for i in range(1, 485)]
+urls = [f"{base_url}{i:04d}/" for i in range(1, 486)]
 
 
 async def fetch_content(url: str) -> str:
@@ -126,7 +126,7 @@ async def main() -> dict[str, list[str]]:
     for title, content in completed_tasks:  # 將結果存儲在字典中
         results[title] = content  # 將標題和內容存儲在字典中
 
-    await asyncio.gather(generate_html_pages(results, items_per_page=5), generate_text_files(results, items_per_file=5))
+    await asyncio.gather(generate_html_pages(results, items_per_page=1), generate_text_files(results, items_per_file=1))
     return results  # 返回結果
 
 

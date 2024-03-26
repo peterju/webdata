@@ -124,7 +124,7 @@ async def main() -> dict[str, list[str]]:
     for title, content in completed_tasks:  # 將結果存儲在字典中
         results[title] = content  # 將標題和內容存儲在字典中
 
-    await asyncio.gather(generate_html_pages(results, items_per_page=5), generate_text_files(results, items_per_file=5))
+    await asyncio.gather(generate_html_pages(results, items_per_page=1), generate_text_files(results, items_per_file=1))
     return results  # 返回結果
 
 
